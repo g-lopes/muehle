@@ -37,11 +37,19 @@ static set<char> getFreeSpaces(char board[24]) {
 	return free_spaces;
 }
 
+static bool hasPlayerOnly3Pieces(char player, int number_of_unplaced_pieces, char board[24]) {
+	bool has_only_three_pieces = false;
+	int number_of_players_pieces_on_the_board = 0;
+
+	if(number_of_unplaced_pieces == 0 )
+	return true;
+}
+
 /*given the map of a board(keys = nodes, values = edges) and which nodes are
 not occupied, this function returns every possible move the player can make*/
 static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilities, set<char> free_spaces, int number_of_unplaced_pieces) {
 	map<char, set<char>> possible_moves = all_possibilities;
-	if(number_of_unplaced_pieces == 3) {
+	if(number_of_unplaced_pieces == 0) {
 		cout << "Attention! Player has only 3 pieces. Therefore he/she can move freely through the board!";
 		return all_possibilities;
 	}

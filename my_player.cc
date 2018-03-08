@@ -1,10 +1,9 @@
 #include <stdlib.h>
 #include <map>
-#include <vector>
+#include <set>
 #include <stdio.h>
 #include <iostream>
 #include <algorithm>
-
 
 using namespace std;
 
@@ -25,48 +24,60 @@ static char num2sym(char input)
 	}
 }
 
-static vector<char> getFreeSpaces(char board[24]) {
-	vector<char> free_spaces;
+static set<char> getFreeSpaces(char board[24]) {
+	set<char> free_spaces;
 	char current_space = 'A';
 	for(int i = 0; i < 24; i++) {
 		if(board[i] == '.') {
-			free_spaces.push_back(current_space);
+			free_spaces.insert(current_space);
 		}
 		current_space++;
 	}
 	return free_spaces;
 }
 
-static map<char, vector<char>> getPossibleMoves(map<char, vector<char>> all_possibilities, vector<char> free_spaces) {
-	map<char, vector<char>> possible_moves = all_possibilities;
-	int i = 0;
-	bool is_free = false;
+static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilities, set<char> free_spaces) {
+	map<char, set<char>> possible_moves = all_possibilities;
 
-	for(map<char,vector<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
-		cout << entry->first << " --> (";
-		for(auto it = begin(entry->second); it != end(entry->second); ++it) {
+	//debugging-loop
+	cout << "\nbefore removing occupied spaces\n";
+	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
+		cout << entry->first;
+		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
 			cout << *it;
-			if(i != entry->second.size() - 1) {
-				cout << ',';
-			}
-
-			for(auto fs = begin(free_spaces); fs != end(free_spaces); ++fs) {
-				is_free = false;
-
-				if(*fs == *it) {
-					//cout << *fs << " is a free space!!!" << '\n';
-					is_free = true;
-				}
-				if(!is_free) {
-					//entry->second.erase(entry->second.begin() + i);
-					//cout << '\n' << *fs << " Element erased!";
-				}
-			}
-			i++;
 		}
-		i=0;
-		cout << ")" << '\n';
+		cout << '\n';
 	}
+	//loops to filter the occupied spaces out
+	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
+		for(auto fs = begin(free_spaces); fs != end(free_spaces); ++fs) {
+			for(auto it = begin(entry->second); it != end(entry->second); ++it) {
+				if(*fs == *it) {
+					//cout << '\n' << *it << " is free!";
+					break;
+				}
+				else {
+					if(free_spaces.find(*it) == free_spaces.end()) {
+						cout << '\n' << *it << " is in NOT the free_space set!";
+						entry->second.erase(it);
+
+					}
+
+				}
+			}
+		}
+	}
+
+	//debugging-loop
+	cout << "\nafter removing occupied space s\n";
+	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
+		cout << entry->first;
+		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
+			cout << *it;
+		}
+		cout << '\n';
+	}
+
 
 	return possible_moves;
 }
@@ -87,32 +98,32 @@ int main(void)
 
 	//My variables
 
-	vector<char> a = {'B', 'J'};
-	vector<char> b = {'A', 'C', 'E'};
-	vector<char> c = {'B', 'O'};
-	vector<char> d = {'E', 'K'};
-	vector<char> e = {'B', 'D', 'F', 'H'};
-	vector<char> f = {'E', 'N'};
-	vector<char> g = {'H', 'L'};
-	vector<char> h = {'E', 'G', 'I'};
-	vector<char> i = {'H', 'M'};
-	vector<char> j = {'A', 'K', 'V'};
-	vector<char> k = {'D', 'J', 'L', 'S'};
-	vector<char> l = {'G', 'K', 'P'};
-	vector<char> m = {'I', 'N', 'R'};
-	vector<char> n = {'F', 'M', 'O', 'U'};
-	vector<char> o = {'C', 'N', 'X'};
-	vector<char> p = {'L', 'Q'};
-	vector<char> q = {'P', 'R', 'T'};
-	vector<char> r = {'M', 'Q'};
-	vector<char> s = {'K', 'T'};
-	vector<char> t = {'Q', 'S', 'U', 'W'};
-	vector<char> u = {'N', 'T'};
-	vector<char> v = {'J', 'W'};
-	vector<char> w = {'V', 'X'};
-	vector<char> x = {'O', 'W'};
+	set<char> a = {'B', 'J'};
+	set<char> b = {'A', 'C', 'E'};
+	set<char> c = {'B', 'O'};
+	set<char> d = {'E', 'K'};
+	set<char> e = {'B', 'D', 'F', 'H'};
+	set<char> f = {'E', 'N'};
+	set<char> g = {'H', 'L'};
+	set<char> h = {'E', 'G', 'I'};
+	set<char> i = {'H', 'M'};
+	set<char> j = {'A', 'K', 'V'};
+	set<char> k = {'D', 'J', 'L', 'S'};
+	set<char> l = {'G', 'K', 'P'};
+	set<char> m = {'I', 'N', 'R'};
+	set<char> n = {'F', 'M', 'O', 'U'};
+	set<char> o = {'C', 'N', 'X'};
+	set<char> p = {'L', 'Q'};
+	set<char> q = {'P', 'R', 'T'};
+	set<char> r = {'M', 'Q'};
+	set<char> s = {'K', 'T'};
+	set<char> t = {'Q', 'S', 'U', 'W'};
+	set<char> u = {'N', 'T'};
+	set<char> v = {'J', 'W'};
+	set<char> w = {'V', 'X'};
+	set<char> x = {'O', 'W'};
 
-	map<char, vector<char>> all_possibilities = {
+	map<char, set<char>> all_possibilities = {
 		{'A', a}, {'B', b}, {'C', c}, {'D', d}, {'E', e}, {'F', f},
 		{'G', g}, {'H', h}, {'I', i}, {'J', j}, {'K', k}, {'L', l},
 		{'M', m}, {'N', n}, {'O', o}, {'P', p}, {'Q', q}, {'R', r},
@@ -183,7 +194,7 @@ int main(void)
 			   num2sym((char)current_player + '0'));
 
 		int x = 0;
-		map<char, vector<char>> filtered_moves = getPossibleMoves(all_possibilities,getFreeSpaces(board));
+		map<char, set<char>> filtered_moves = getPossibleMoves(all_possibilities,getFreeSpaces(board));
 		cin >> x;
 
 		/* Unless we have unplaced pieces, ask which piece to move. */

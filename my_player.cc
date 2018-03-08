@@ -24,6 +24,7 @@ static char num2sym(char input)
 	}
 }
 
+//given a board, this function returns EVERY free space on that board
 static set<char> getFreeSpaces(char board[24]) {
 	set<char> free_spaces;
 	char current_space = 'A';
@@ -36,47 +37,50 @@ static set<char> getFreeSpaces(char board[24]) {
 	return free_spaces;
 }
 
-static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilities, set<char> free_spaces) {
+/*given the map of a board(keys = nodes, values = edges) and which nodes are
+not occupied, this function returns every possible move the player can make*/
+static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilities, set<char> free_spaces, int number_of_unplaced_pieces) {
 	map<char, set<char>> possible_moves = all_possibilities;
+	if(number_of_unplaced_pieces == 3) {
+		cout << "Attention! Player has only 3 pieces. Therefore he/she can move freely through the board!";
+		return all_possibilities;
+	}
 
 	//debugging-loop
-	cout << "\nbefore removing occupied spaces\n";
+	/*cout << "\nbefore removing occupied spaces\n";
 	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
-		cout << entry->first;
+		cout << entry->first << " --> (";
 		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
-			cout << *it;
+			cout << *it << ',';
 		}
-		cout << '\n';
-	}
+		cout << ")\n";
+	}*/
+
 	//loops to filter the occupied spaces out
 	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
 		for(auto fs = begin(free_spaces); fs != end(free_spaces); ++fs) {
 			for(auto it = begin(entry->second); it != end(entry->second); ++it) {
 				if(*fs == *it) {
-					//cout << '\n' << *it << " is free!";
 					break;
 				}
 				else {
 					if(free_spaces.find(*it) == free_spaces.end()) {
-						cout << '\n' << *it << " is in NOT the free_space set!";
 						entry->second.erase(it);
-
 					}
-
 				}
 			}
 		}
 	}
 
 	//debugging-loop
-	cout << "\nafter removing occupied space s\n";
+	/*cout << "\nafter removing occupied space s\n";
 	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
-		cout << entry->first;
+		cout << entry->first << " --> (";
 		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
-			cout << *it;
+			cout << *it << ',';
 		}
-		cout << '\n';
-	}
+		cout << ")\n";
+	}*/
 
 
 	return possible_moves;
@@ -193,9 +197,7 @@ int main(void)
 		printf("Player %d's move (%c).\n", current_player,
 			   num2sym((char)current_player + '0'));
 
-		int x = 0;
-		map<char, set<char>> filtered_moves = getPossibleMoves(all_possibilities,getFreeSpaces(board));
-		cin >> x;
+		map<char, set<char>> filtered_moves = getPossibleMoves(all_possibilities,getFreeSpaces(board), unplaced_pieces[current_player]);
 
 		/* Unless we have unplaced pieces, ask which piece to move. */
 		if (unplaced_pieces[current_player]) {

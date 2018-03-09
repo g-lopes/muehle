@@ -76,6 +76,7 @@ not occupied, this function returns every possible move the player can make*/
 static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilities, set<char> free_spaces, bool is_free_to_move) {
 	map<char, set<char>> possible_moves = all_possibilities;
 	if(is_free_to_move) {
+		cout << '\n' << "ALL POSSIBILITIES RETURNED, BECAUSE THE PLAYER HAS JUST 3 PIECES";
 		return all_possibilities;
 	}
 
@@ -114,6 +115,19 @@ static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilit
 		}
 		cout << ")\n";
 	}*/
+
+	possible_moves = all_possibilities;
+
+	//debugging-loop
+	cout << "\nreturned map: \n";
+	for(map<char,set<char>>::iterator entry = possible_moves.begin(); entry != possible_moves.end(); ++entry) {
+		cout << entry->first << " --> (";
+		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
+			cout << *it << ',';
+		}
+		cout << ")\n";
+	}
+
 
 
 	return possible_moves;
@@ -217,6 +231,8 @@ int main(void) {
 		char newline;
 		int matches;
 
+		set<char> myset;
+
 		/* Initialize game's state variables */
 		matches = fscanf(state_input, "%u %u %u%c", &current_player,
 						 &unplaced_pieces[0], &unplaced_pieces[1], &newline);
@@ -271,7 +287,7 @@ int main(void) {
 		printf("Player %d's move (%c).\n", current_player,
 			   num2sym((char)current_player + '0'));
 
-	  //bool is_free_to_move = hasPlayerOnly3Pieces(current_player, unplaced_pieces[current_player], board);
+	  bool is_free_to_move = hasPlayerOnly3Pieces(current_player, unplaced_pieces[current_player], board);
 		//map<char, set<char>> filtered_moves = getPossibleMoves(all_possibilities,getFreeSpaces(board), is_free_to_move);
 		//getPlayerPositions(current_player, board);
 		//hasPlayerUnplacedPieces(unplaced_pieces[current_player]);
@@ -288,23 +304,36 @@ int main(void) {
 			fflush(stdout);
 			//matches = fscanf(stdin, "%c%c", &piece_move, &newline);
 			//if (matches != 2) break;
-			piece_move = pickRandomPiece(getPlayerPositions(current_player, board));
 			newline = '\n';
+			piece_move = pickRandomPiece(getPlayerPositions(current_player, board));
+			cout << piece_move << '\n';
+
+			myset = getPossibleMoves(all_possibilities, getFreeSpaces(board), is_free_to_move).at(piece_move);
+
+			while(myset.size() == 0) {
+				piece_move = pickRandomPiece(getPlayerPositions(current_player, board));
+				myset = getPossibleMoves(all_possibilities, getFreeSpaces(board), is_free_to_move).at(piece_move);
+				cout << '\n' << "SORRY, WE NEED TO CHOOSE A NEW PIECE TO MOVE....   " << piece_move <<'\n';
+			}
+
 		}
 
 		/* Ask where to place the piece. */
 		printf("  Where do you want to put the piece: ");
 		fflush(stdout);
 		//matches = fscanf(stdin, "%c%c", &piece_put, &newline);
-		piece_put = chooseRandomPosition(getFreeSpaces(board));
-		cout << '\n' << "Chosen random position: " << piece_put << "\n";
+		if(unplaced_pieces[current_player]) {
+			piece_put = chooseRandomPosition(getFreeSpaces(board));
+		} else {
+			piece_put = chooseRandomPosition(myset);
+		}
+		cout << piece_put << "\n";
 		newline = '\n';
 
 		//debugging-loop
 		/*for(int i = 0; i < 10; i++) {
 			chooseRandomPosition(getFreeSpaces(board));
 		}*/
-
 
 		//if (matches != 2) break;
 

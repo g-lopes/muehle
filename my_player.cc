@@ -10,8 +10,7 @@ using namespace std;
 
 
 /* convert player number to board symbols */
-static char num2sym(char input)
-{
+static char num2sym(char input) {
 	switch (input) {
 		case '0':
 			return 'X';
@@ -24,7 +23,7 @@ static char num2sym(char input)
 	}
 }
 
-//given a board, this function returns EVERY free space on that board
+/* given a board, this function returns EVERY free space on that board */
 static set<char> getFreeSpaces(char board[24]) {
 	set<char> free_spaces;
 	char current_space = 'A';
@@ -37,15 +36,37 @@ static set<char> getFreeSpaces(char board[24]) {
 	return free_spaces;
 }
 
-static bool hasPlayerOnly3Pieces(char player, int number_of_unplaced_pieces, char board[24]) {
-	bool has_only_three_pieces = false;
+/* given the player and the board state,
+returns the number of pieces of that player on currently board state */
+static int piecesOnTheBoard(unsigned player, char board[24]) {
 	int number_of_players_pieces_on_the_board = 0;
+	char player_char = ' ';
+	if(player == 1) {
+		player_char = '1';
+	} else if(player == 0) {
+		player_char = '0';
+	}
+	for(int i = 0; i < 24; i++) {
+		if(board[i] == player_char) {
+			number_of_players_pieces_on_the_board++;
+		}
 
-	if(number_of_unplaced_pieces == 0 )
+	}
+	return number_of_players_pieces_on_the_board;
+}
+
+static bool hasPlayerOnly3Pieces(unsigned player, int number_of_unplaced_pieces, char board[24]) {
+	bool has_only_three_pieces = false;
+	int number_of_players_pieces_on_the_board = piecesOnTheBoard(player, board);
+
+	if(number_of_unplaced_pieces == 0 && number_of_players_pieces_on_the_board == 3) {
+		cout << "ATTTTTTENNNNNNTION u just have 3 pieces!";
+
+	}
 	return true;
 }
 
-/*given the map of a board(keys = nodes, values = edges) and which nodes are
+/* given the map of a board(keys = nodes, values = edges) and which nodes are
 not occupied, this function returns every possible move the player can make*/
 static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilities, set<char> free_spaces, int number_of_unplaced_pieces) {
 	map<char, set<char>> possible_moves = all_possibilities;
@@ -95,9 +116,7 @@ static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilit
 }
 
 
-int main(void)
-{
-	cout << "This is the best player in the world!";
+int main(void) {
 	/* current game state is delivered via file descriptor 3 */
 	FILE *state_input = fdopen(3, "r");
 	/* we output our move via file descriptor 4 */
@@ -109,7 +128,6 @@ int main(void)
 	}
 
 	//My variables
-
 	set<char> a = {'B', 'J'};
 	set<char> b = {'A', 'C', 'E'};
 	set<char> c = {'B', 'O'};
@@ -151,7 +169,7 @@ int main(void)
 		char newline;
 		int matches;
 
-		/*Initialize game's state variables*/
+		/* Initialize game's state variables */
 		matches = fscanf(state_input, "%u %u %u%c", &current_player,
 						 &unplaced_pieces[0], &unplaced_pieces[1], &newline);
 		if (matches != 4) {
@@ -204,7 +222,7 @@ int main(void)
 		printf("\n");
 		printf("Player %d's move (%c).\n", current_player,
 			   num2sym((char)current_player + '0'));
-
+		piecesOnTheBoard(current_player, board);
 		map<char, set<char>> filtered_moves = getPossibleMoves(all_possibilities,getFreeSpaces(board), unplaced_pieces[current_player]);
 
 		/* Unless we have unplaced pieces, ask which piece to move. */

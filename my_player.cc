@@ -8,7 +8,40 @@
 
 using namespace std;
 
+/* returns true if the player made a mill */
+static bool millsOnTheBoard(unsigned player, char board[24]) {
+	char player_char = ' ';
+	if(player == 1) {
+		player_char = '1';
+	} else if(player == 0) {
+		player_char = '0';
+	}
 
+	bool made_new_mill = false;
+
+	set<set<char>> all_mills = {
+		{'A','B','C'},
+		{'D','E','F'},
+		{'G','H','I'},
+		{'J','K','L'},
+		{'M','N','O'},
+		{'P','Q','R'},
+		{'S','T','U'},
+		{'V','W','X'},
+		{'A','J','V'},
+		{'D','K','S'},
+		{'G','L','P'},
+		{'B','E','H'},
+		{'Q','T','W'},
+		{'I','M','R'},		{'A','B','C'},
+		{'A','B','C'},
+		{'A','B','C'},
+		{'F','N','U'},
+		{'C','O','X'}
+	};
+
+	return made_new_mill;
+}
 
 /* convert player number to board symbols */
 static char num2sym(char input) {
@@ -242,6 +275,10 @@ int main(void) {
 			break;
 		}
 
+		millsOnTheBoard(board);
+
+
+
 		/* Now pretty-print the board and ask the user for a move. */
 		if (unplaced_pieces[0]) {
 			printf("Player 0: ");
@@ -290,8 +327,7 @@ int main(void) {
 		} else {
 			printf("  Which piece do you want to move:    ");
 			fflush(stdout);
-			//matches = fscanf(stdin, "%c%c", &piece_move, &newline);
-			//if (matches != 2) break;
+
 			newline = '\n';
 			piece_move = pickRandomPiece(getPlayerPositions(current_player, board));
 			cout << piece_move << '\n';

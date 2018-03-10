@@ -5,11 +5,14 @@
 #include <iostream>
 #include <algorithm>
 #include <time.h>
+#include <string.h>
+
 
 using namespace std;
 
-/* returns true if the player made a mill */
-static bool millsOnTheBoard(unsigned player, char board[24]) {
+
+
+/*static int millsOnTheBoard(set<char> player_positions, char board[24], unsigned player) {
 	char player_char = ' ';
 	if(player == 1) {
 		player_char = '1';
@@ -17,7 +20,18 @@ static bool millsOnTheBoard(unsigned player, char board[24]) {
 		player_char = '0';
 	}
 
-	bool made_new_mill = false;
+
+	char *current_board = board;
+
+	int current_number_of_mills = 0;
+
+
+	//debuging-loop
+	cout << "\n this is ur current board = ";
+	for(int i = 0; i < 24; i++) {
+		cout << current_board[i] << ',';
+	}
+	cout << "\n";
 
 	set<set<char>> all_mills = {
 		{'A','B','C'},
@@ -39,6 +53,472 @@ static bool millsOnTheBoard(unsigned player, char board[24]) {
 		{'F','N','U'},
 		{'C','O','X'}
 	};
+
+	//search currently mills
+	for(set<char>::iterator it = player_positions.begin(); it != player_positions.end(); ++it) {
+		switch(*it) {
+			case 'A': if((current_board[1] == player_char
+				         && current_board[2] == player_char)
+								 ||(current_board[9] == player_char
+								 && current_board[21] == player_char))
+								{
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+									current_number_of_mills++;
+								}
+								//cout << '\n' << "AAAAAA" << '\n';
+								break;
+			case 'B': if(current_board[4] == player_char && current_board[7] == player_char)
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "BBBBBB" << '\n';
+
+								break;
+			case 'C': if((current_board[14] == player_char && current_board[23] == player_char))
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "CCCCCC" << '\n';
+
+								break;
+			case 'D': if((current_board[10] == player_char
+				         && current_board[18] == player_char)
+								 ||(current_board[4] == player_char
+								 && current_board[5] == player_char))
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "DDDDDDD" << '\n';
+
+								break;
+			case 'F': if(current_board[13] == player_char && current_board[20] == player_char)
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "FFFFFFF" << '\n';
+
+								break;
+			case 'G': if((current_board[2] == player_char
+				         && current_board[8] == player_char)
+								 ||(current_board[11] == player_char
+								 && current_board[14] == player_char))
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "GGGGG" << '\n';
+								break;
+			case 'I': if(current_board[12] == player_char && current_board[17] == player_char)
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "IIIII" << '\n';
+
+								break;
+			case 'J': if((current_board[10] == player_char && current_board[11] == player_char))
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "JJJJJJ" << '\n';
+
+								break;
+			case 'M': if(current_board[13] == player_char && current_board[14] == player_char)
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "MMMMM" << '\n';
+
+								break;
+			case 'P': if(current_board[16] == player_char && current_board[17] == player_char)
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "PPPPPP" << '\n';
+								break;
+			case 'Q': if(current_board[19] == player_char && current_board[22] == player_char)
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "QQQQQQ" << '\n';
+
+								break;
+			case 'S': if((current_board[19] == player_char && current_board[20] == player_char))
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "SSSSS" << '\n';
+
+								break;
+			case 'V': if(current_board[22] == player_char && current_board[23] == player_char)
+								{
+									current_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "VVVVV" << '\n';
+
+								break;
+
+		}
+	}
+
+
+	//debugging-print
+	cout << "\n number of mills = " << current_number_of_mills;
+
+	return current_number_of_mills;
+}*/
+
+static bool hasPlayerNewMill(int current_number_of_mills, int future_number_of_mills) {
+	if(future_number_of_mills > current_number_of_mills) {
+		cout << '\n' << "Yuhuuuuuuuuuuuuuu u have correctly detected the creation of a new mill! Have ur self a beer!" << '\n';
+		return true;
+	}
+	return false;
+}
+
+
+
+
+/* returns a set with all positions occupied by given the player */
+static set<char> getPlayerPositions(unsigned player, char board[24]) {
+	set<char> player_positions;
+	char current_space = 'A';
+	char player_char = ' ';
+	if(player == 1) {
+		player_char = '1';
+	} else if(player == 0) {
+		player_char = '0';
+	}
+	for(int i = 0; i < 24; i++) {
+		if(board[i] == player_char) {
+			player_positions.insert(current_space);
+		}
+		current_space++;
+	}
+
+	//debugging-loop
+	/*cout << '\n' << "Player occupies the following positions: ";
+	for(set<char>::iterator it = player_positions.begin(); it != player_positions.end(); ++it) {
+		cout << *it << ',';
+	}
+	cout << '\n';
+	*/
+
+
+	return player_positions;
+}
+
+/* returns true if the player made a mill */
+static bool millsOnTheBoard(set<char> player_positions, char board[24], char piece_move, char piece_put, unsigned player) {
+	char player_char = ' ';
+	if(player == 1) {
+		player_char = '1';
+	} else if(player == 0) {
+		player_char = '0';
+	}
+
+	bool made_new_mill = false;
+
+	cout << "\n PIECE-MOVE = " << piece_move << "\n";
+
+
+	char current_board[24];
+	char future_board[24];
+	strncpy ( current_board, board, sizeof(current_board) );
+	strncpy ( future_board, board, sizeof(future_board) );
+
+	int current_number_of_mills = 0;
+	int future_number_of_mills = 0;
+
+
+	int piece_destination = piece_put - 'A';
+	int piece_origin = piece_move - 'A';
+
+	if(piece_move == ' ') {
+		future_board[piece_destination] = player_char;
+	} else {
+		future_board[piece_destination] = player_char;
+		future_board[piece_origin] = '.';
+	}
+
+	set<char> player_future_positions = getPlayerPositions(player, future_board);
+
+	//debuging-loop
+	cout << "\ncurrent board = ";
+	for(int i = 0; i < 24; i++) {
+		cout << current_board[i] << ',';
+	}
+	cout << "\n";
+	cout << "\n future board = ";
+	for(int i = 0; i < 24; i++) {
+		cout << future_board[i] << ',';
+	}
+	cout << "\n";
+
+
+	set<set<char>> all_mills = {
+		{'A','B','C'},
+		{'D','E','F'},
+		{'G','H','I'},
+		{'J','K','L'},
+		{'M','N','O'},
+		{'P','Q','R'},
+		{'S','T','U'},
+		{'V','W','X'},
+		{'A','J','V'},
+		{'D','K','S'},
+		{'G','L','P'},
+		{'B','E','H'},
+		{'Q','T','W'},
+		{'I','M','R'},		{'A','B','C'},
+		{'A','B','C'},
+		{'A','B','C'},
+		{'F','N','U'},
+		{'C','O','X'}
+	};
+
+	//search currently mills
+	for(set<char>::iterator it = player_positions.begin(); it != player_positions.end(); ++it) {
+		switch(*it) {
+			case 'A': if((current_board[1] == player_char
+				         && current_board[2] == player_char)
+								 ||(current_board[9] == player_char
+								 && current_board[21] == player_char))
+								{
+									cout << '\n' << " AAA  CONGRATS! MILL DETECTED !!!!" << '\n';
+									current_number_of_mills++;
+								}
+								//cout << '\n' << "AAAAAA" << '\n';
+								break;
+			case 'B': if(current_board[4] == player_char && current_board[7] == player_char)
+								{
+									current_number_of_mills++;
+									cout << '\n' << " BBB  CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "BBBBBB" << '\n';
+
+								break;
+			case 'C': if((current_board[14] == player_char && current_board[23] == player_char))
+								{
+									current_number_of_mills++;
+									cout << '\n' << " CCC  CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "CCCCCC" << '\n';
+
+								break;
+			case 'D': if((current_board[10] == player_char
+				         && current_board[18] == player_char)
+								 ||(current_board[4] == player_char
+								 && current_board[5] == player_char))
+								{
+									current_number_of_mills++;
+									cout << '\n' << " DDD  CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "DDDDDDD" << '\n';
+
+								break;
+			case 'F': if(current_board[13] == player_char && current_board[20] == player_char)
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  FFF CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "FFFFFFF" << '\n';
+
+								break;
+			case 'G': if((current_board[2] == player_char
+				         && current_board[8] == player_char)
+								 ||(current_board[11] == player_char
+								 && current_board[14] == player_char))
+								{
+									current_number_of_mills++;
+									cout << '\n' << " GGGG  CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "GGGGG" << '\n';
+								break;
+			case 'I': if(current_board[12] == player_char && current_board[17] == player_char)
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  III CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "IIIII" << '\n';
+
+								break;
+			case 'J': if((current_board[10] == player_char && current_board[11] == player_char))
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  JJJ CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "JJJJJJ" << '\n';
+
+								break;
+			case 'M': if(current_board[13] == player_char && current_board[14] == player_char)
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  MMM CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "MMMMM" << '\n';
+
+								break;
+			case 'P': if(current_board[16] == player_char && current_board[17] == player_char)
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  PPP CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "PPPPPP" << '\n';
+								break;
+			case 'Q': if(current_board[19] == player_char && current_board[22] == player_char)
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  QQQ CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "QQQQQQ" << '\n';
+
+								break;
+			case 'S': if((current_board[19] == player_char && current_board[20] == player_char))
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  SSS CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "SSSSS" << '\n';
+
+								break;
+			case 'V': if(current_board[22] == player_char && current_board[23] == player_char)
+								{
+									current_number_of_mills++;
+									cout << '\n' << "  VVV CONGRATS! MILL DETECTED !!!!" << '\n';
+								}
+								//cout << '\n' << "VVVVV" << '\n';
+
+								break;
+
+		}
+	}
+
+	//search new mills
+	for(set<char>::iterator it = player_future_positions.begin(); it != player_future_positions.end(); ++it) {
+		switch(*it) {
+			case 'A': if((future_board[1] == player_char
+				         && future_board[2] == player_char)
+								 ||(future_board[9] == player_char
+								 && future_board[21] == player_char))
+								{
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+									future_number_of_mills++;
+									cout << "\n AAA \n";
+								}								break;
+			case 'B': if(future_board[4] == player_char && future_board[7] == player_char)
+								{
+									future_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+									cout << "\n BBB \n";
+								}
+
+								break;
+			case 'C': if((future_board[14] == player_char && future_board[23] == player_char))
+								{
+									future_number_of_mills++;
+									//cout << '\n' << "   CONGRATS! MILL DETECTED !!!!" << '\n';
+									cout << "\n CCC \n";
+								}
+
+								break;
+			case 'D': if((future_board[10] == player_char
+				         && future_board[18] == player_char)
+								 ||(future_board[4] == player_char
+								 && future_board[5] == player_char))
+								{
+									future_number_of_mills++;
+									cout << "\n DDD \n";
+								}
+
+								break;
+			case 'F': if(future_board[13] == player_char && future_board[20] == player_char)
+								{
+									future_number_of_mills++;
+									cout << "\n FFF \n";
+								}
+
+								break;
+			case 'G': if((future_board[7] == player_char
+				         && future_board[8] == player_char)
+								 ||(future_board[11] == player_char
+								 && future_board[15] == player_char))
+								{
+									future_number_of_mills++;
+									cout << "\n GGG \n";
+								}
+								break;
+			case 'I': if(future_board[12] == player_char && future_board[17] == player_char)
+								{
+									future_number_of_mills++;
+									cout << "\n III \n";
+								}
+
+								break;
+			case 'J': if((future_board[10] == player_char && future_board[11] == player_char))
+								{
+									future_number_of_mills++;
+									cout << "\n JJJ \n";
+								}
+
+								break;
+			case 'M': if(future_board[13] == player_char && future_board[14] == player_char)
+								{
+									future_number_of_mills++;
+									cout << "\n MMM \n";
+								}
+
+								break;
+			case 'P': if(future_board[16] == player_char && future_board[17] == player_char)
+								{
+									future_number_of_mills++;
+									cout << "\n PPP \n";
+								}
+								break;
+			case 'Q': if(future_board[19] == player_char && future_board[22] == player_char)
+								{
+									future_number_of_mills++;
+									cout << "\n QQQ \n";
+								}
+
+								break;
+			case 'S': if((future_board[19] == player_char && future_board[20] == player_char))
+								{
+									future_number_of_mills++;
+									cout << "\n SSS \n";
+								}
+
+								break;
+			case 'V': if(future_board[22] == player_char && future_board[23] == player_char)
+								{
+									future_number_of_mills++;
+									cout << "\n VVV \n";
+								}
+
+								break;
+
+		}
+	}
+
+	if(future_number_of_mills > current_number_of_mills) {
+		made_new_mill = true;
+		cout << '\n' << "Yuhuuuuuuuuuuuuuu u have correctly detected the creation of a new mill! Have ur self a beer!" << '\n';
+	}
+
+	//debuging-print
+	cout << "\n" << "current number of mills = " << current_number_of_mills;
+	cout << "\n" << " future number of mills = " << future_number_of_mills << "\n";
+
 
 	return made_new_mill;
 }
@@ -162,35 +642,6 @@ static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilit
 	return possible_moves;
 }
 
-/* returns a set with all positions occupied by given the player */
-static set<char> getPlayerPositions(unsigned player, char board[24]) {
-	set<char> player_positions;
-	char current_space = 'A';
-	char player_char = ' ';
-	if(player == 1) {
-		player_char = '1';
-	} else if(player == 0) {
-		player_char = '0';
-	}
-	for(int i = 0; i < 24; i++) {
-		if(board[i] == player_char) {
-			player_positions.insert(current_space);
-		}
-		current_space++;
-	}
-
-	//debugging-loop
-	/*cout << '\n' << "Player occupies the following positions: ";
-	for(set<char>::iterator it = player_positions.begin(); it != player_positions.end(); ++it) {
-		cout << *it << ',';
-	}
-	cout << '\n';
-	*/
-
-
-	return player_positions;
-}
-
 static char pickRandomPiece(set<char> player_positions) {
 	int max_random_number = player_positions.size();
 	char randomPiece = *next(player_positions.begin(), (rand() % max_random_number));
@@ -275,10 +726,6 @@ int main(void) {
 			break;
 		}
 
-		millsOnTheBoard(board);
-
-
-
 		/* Now pretty-print the board and ask the user for a move. */
 		if (unplaced_pieces[0]) {
 			printf("Player 0: ");
@@ -319,6 +766,7 @@ int main(void) {
 		printf("Player %d's move (%c).\n", current_player,
 			   num2sym((char)current_player + '0'));
 
+
 	  bool is_free_to_move = hasPlayerOnly3Pieces(current_player, unplaced_pieces[current_player], board);
 
 		/* Unless we have unplaced pieces, ask which piece to move. */
@@ -330,7 +778,7 @@ int main(void) {
 
 			newline = '\n';
 			piece_move = pickRandomPiece(getPlayerPositions(current_player, board));
-			cout << piece_move << '\n';
+
 
 			possible_moves_set = getPossibleMoves(all_possibilities, getFreeSpaces(board), is_free_to_move).at(piece_move);
 
@@ -340,6 +788,7 @@ int main(void) {
 				piece_move = pickRandomPiece(getPlayerPositions(current_player, board));
 				possible_moves_set = getPossibleMoves(all_possibilities, getFreeSpaces(board), is_free_to_move).at(piece_move);
 			}
+			cout << piece_move << '\n';
 
 		}
 
@@ -358,6 +807,11 @@ int main(void) {
 		}
 		cout << piece_put << "\n";
 		newline = '\n';
+
+		millsOnTheBoard(getPlayerPositions(current_player, board), board, piece_move, piece_put, current_player);
+		//millsOnTheBoard(getPlayerPositions(current_player, board), board, current_player);
+
+
 
 		/* Remove a piece from your opponent? */
 		printf("You can now remove a piece from your opponent.\n");

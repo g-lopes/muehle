@@ -624,7 +624,7 @@ int main(void) {
 
 		/* decide wheter the player is placing a piece into the game,
 		or just moving a piece which was already on the board. this is important,
-		because when placing a new piece, the destination can be any empty space,
+		because when placing a new piece, the destination can be any empty space
 		and when moving an existing piece, the destination is restricted */
 		if(unplaced_pieces[current_player]) {
 			piece_put = chooseRandomPosition(getFreeSpaces(board));

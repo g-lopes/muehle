@@ -1,4 +1,4 @@
-
+//my_player.cc
 #include <stdlib.h>
 #include <map>
 #include <set>
@@ -10,6 +10,288 @@
 
 
 using namespace std;
+/*static char enemyThreat() {
+
+
+
+	return 'c';
+}*/
+/* given a player's piece, this function returns true if this piece is
+currently NOT part of a mill and therefore, it can be removed" */
+static bool canBeRemoved(int position, char board[24]) {
+	char player_char = board[position];
+	set<char> current_mills_identifiers;
+
+	switch (position) {
+		case 0: if(board[1] == player_char && board[2] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[9] == player_char && board[21] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 1: if(board[0] == player_char && board[2] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[4] == player_char && board[7] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 2: if(board[0] == player_char && board[1] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[14] == player_char && board[23] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 3: if(board[4] == player_char && board[5] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[10] == player_char && board[18] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 4: if(board[3] == player_char && board[5] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[1] == player_char && board[7] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 5: if(board[3] == player_char && board[4] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[13] == player_char && board[20] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 6: if(board[7] == player_char && board[8] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[11] == player_char && board[14] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 7: if(board[6] == player_char && board[8] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[1] == player_char && board[4] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 8: if(board[6] == player_char && board[7] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[12] == player_char && board[17] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 9: if(board[0] == player_char && board[21] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[10] == player_char && board[11] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 10: if(board[9] == player_char && board[11] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[3] == player_char && board[18] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 11: if(board[9] == player_char && board[10] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[6] == player_char && board[14] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 12: if(board[13] == player_char && board[14] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[8] == player_char && board[17] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 13: if(board[12] == player_char && board[14] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[5] == player_char && board[20] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 14: if(board[2] == player_char && board[23] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[12] == player_char && board[13] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 15: if(board[16] == player_char && board[17] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << "i s part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[6] == player_char && board[11] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 16: if(board[15] == player_char && board[17] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[19] == player_char && board[22] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 17: if(board[8] == player_char && board[12] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[15] == player_char && board[16] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 18: if(board[19] == player_char && board[20] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[3] == player_char && board[10] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 19: if(board[16] == player_char && board[22] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[18] == player_char && board[20] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 20: if(board[5] == player_char && board[13] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[18] == player_char && board[19] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 21: if(board[22] == player_char && board[23] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[0] == player_char && board[9] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 22: if(board[21] == player_char && board[23] == player_char) {
+						cout << "\n Piece in position "  << position;
+						cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[16] == player_char && board[19] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+		case 23: if(board[2] == player_char && board[14] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						if(board[21] == player_char && board[22] == player_char) {
+							cout << "\n Piece in position "  << position;
+							cout << " is part of a mill! Therefore it can't be removed. Please choose another one. \n";
+							return false;
+						}
+						break;
+	}
+
+	//cout << "\n Congrats! This piece can be removed! \n";
+	return true;
+}
 
 /* returns a set with all positions occupied by given the player */
 static set<char> getPlayerPositions(unsigned player, char board[24]) {
@@ -167,7 +449,7 @@ static bool millsOnTheBoard(set<char> player_positions, char board[24], char pie
 									current_mills_identifiers.insert('h');
 									//current_number_of_mills++;
 								}
-								if(current_board[11] == player_char && current_board[14] == player_char)
+								if(current_board[11] == player_char && current_board[15] == player_char)
 								{
 									//current_number_of_mills++;
 									current_mills_identifiers.insert('l');
@@ -328,12 +610,9 @@ static bool millsOnTheBoard(set<char> player_positions, char board[24], char pie
 		} else {
 		}
 	}
-	//debuging-print
-	/*cout << "\n" << "current number of mills = " << current_number_of_mills;
-	cout << "\n" << " future number of mills = " << future_number_of_mills << "\n";*/
 
 	//debugging-print
-	/*cout << "\n current_mills_identifiers = ";
+	cout << "\n current_mills_identifiers = ";
 	for(set<char>::iterator it = current_mills_identifiers.begin(); it != current_mills_identifiers.end(); ++it){
 		cout << *it << ',';
 	}
@@ -342,7 +621,7 @@ static bool millsOnTheBoard(set<char> player_positions, char board[24], char pie
 	for(set<char>::iterator it = future_mills_identifiers.begin(); it != future_mills_identifiers.end(); ++it){
 		cout << *it << ',';
 	}
-	cout << "\n";*/
+	cout << "\n";
 
 
 	return made_new_mill;
@@ -408,21 +687,20 @@ static bool hasPlayerOnly3Pieces(unsigned player, int number_of_unplaced_pieces,
 /* given the map of a board(keys = nodes, values = edges) and which nodes are
 not occupied, this function returns every possible move the player can make*/
 static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilities, set<char> free_spaces, bool is_free_to_move) {
-	map<char, set<char>> possible_moves = all_possibilities;
+	map<char, set<char>> possible_moves(all_possibilities);
 
 	if(is_free_to_move) {
-		return all_possibilities;
-	}
-
-	//debugging-loop
-	/*cout << "\nbefore removing occupied spaces\n";
-	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
-		cout << entry->first << " --> (";
-		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
-			cout << *it << ',';
+		cout << "\nPLAYER IS FREE TO MOOOOOOOOOOVE!\n";
+		for(map<char,set<char>>::iterator entry = possible_moves.begin(); entry != possible_moves.end(); ++entry) {
+			entry->second = free_spaces;
+			cout << "key = " << entry->first;
+			cout << "\n values = ";
+			for(auto i = entry->second.begin(); i != entry->second.end(); ++i) {
+				cout << *i << ",";
+			}
+			cout << '\n';
 		}
-		cout << ")\n";
-	}*/
+	}
 
 	//loops to filter the occupied spaces out
 	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
@@ -432,37 +710,17 @@ static map<char, set<char>> getPossibleMoves(map<char, set<char>> all_possibilit
 					break;
 				}
 				else {
+					//if *it is NOT in the free_space set- This means the space is occupied,
+					// so we need to remove it from the possible_moves map.
 					if(free_spaces.find(*it) == free_spaces.end()) {
-						entry->second.erase(it);
+						possible_moves.at(entry->first).erase(*it);
+
+						//entry->second.erase(it);
 					}
 				}
 			}
 		}
 	}
-
-	//debugging-loop
-	/*cout << "\nafter removing occupied space s\n";
-	for(map<char,set<char>>::iterator entry = all_possibilities.begin(); entry != all_possibilities.end(); ++entry) {
-		cout << entry->first << " --> (";
-		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
-			cout << *it << ',';
-		}
-		cout << ")\n";
-	}*/
-
-	possible_moves = all_possibilities;
-
-	//debugging-loop
-	/*cout << "\nreturned map: \n";
-	for(map<char,set<char>>::iterator entry = possible_moves.begin(); entry != possible_moves.end(); ++entry) {
-		cout << entry->first << " --> (";
-		for(set<char>::iterator it = entry->second.begin(); it != entry->second.end(); ++it) {
-			cout << *it << ',';
-		}
-		cout << ")\n";
-	}*/
-
-
 
 	return possible_moves;
 }
@@ -492,7 +750,7 @@ int main(void) {
 		exit(1);
 	}
 
-	//My variables
+	//Board connections
 	set<char> a = {'B', 'J'};
 	set<char> b = {'A', 'C', 'E'};
 	set<char> c = {'B', 'O'};
@@ -605,9 +863,9 @@ int main(void) {
 			fflush(stdout);
 
 			newline = '\n';
+			//choose a random piece to move
 			piece_move = pickRandomPiece(getPlayerPositions(current_player, board));
-
-
+			//make a set with all possible moves for the chosen piece
 			possible_moves_set = getPossibleMoves(all_possibilities, getFreeSpaces(board), is_free_to_move).at(piece_move);
 
 			/* if the size of the set is zero, this means that there are no movements
@@ -633,6 +891,7 @@ int main(void) {
 		} else {
 			piece_put = chooseRandomPosition(possible_moves_set);
 		}
+
 		cout << piece_put << "\n";
 		newline = '\n';
 
@@ -643,20 +902,36 @@ int main(void) {
 
 		piece_kill = '\n';
 
-
 		can_remove_opponents_piece = millsOnTheBoard(getPlayerPositions(current_player, board), board, piece_move, piece_put, current_player);
 
+		set<char> opponent_positions = getOpponentPositions(current_player, board);
 
+		cout << "\n OPPONENT_POSITIONS = ";
+		for(auto i = opponent_positions.begin(); i != opponent_positions.end(); ++i) {
+			cout << *i << ",";
+		}
+		cout << "\n";
+
+		//if the player makes a mill and can remove a opponents piece, than do it.
 		if(can_remove_opponents_piece) {
-
+			cout << "\n YOU CAN REMOVE A PIECE!! \n";
 			piece_kill = pickRandomPiece(getOpponentPositions(current_player, board));
+			int position = int(piece_kill) - 65;
+
+			for(set<char>::iterator pos = opponent_positions.begin(); pos != opponent_positions.end(); ++pos) {
+				position = int(*pos) - 65;
+				if(canBeRemoved(position, board)) {
+					piece_kill = *pos;
+					break;
+				}
+			}
 			cout << piece_kill;
 		}
 
 		//matches = fscanf(stdin, "%c", &piece_kill);
-		if (piece_kill != '\n') {
-			matches = fscanf(stdin, "%c", &newline);
-		}
+		//if (piece_kill != '\n') {
+			//matches = fscanf(stdin, "%c", &newline);
+		//}
 		//if (matches != 1) break;
 
 		printf("\n");
